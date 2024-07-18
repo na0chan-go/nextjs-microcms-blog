@@ -26,6 +26,7 @@ export default async function Home() {
           width={4000}
           height={1200}
           priority
+          sizes="100vw"
         />
       </section>
       <section className={styles.news}>

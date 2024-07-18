@@ -1,6 +1,6 @@
 "use client";
 
-import { createContactDate } from "@/app/_actions/contact";
+import { createContactData } from "@/app/_actions/contact";
 import { useFormState } from "react-dom";
 import styles from "./index.module.css";
 
@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export default function ContactForm() {
-  const [state, formAction] = useFormState(createContactDate, initialState);
+  const [state, formAction] = useFormState(createContactData, initialState);
   console.log(state);
   if (state.status === "success") {
     return (
@@ -21,7 +21,6 @@ export default function ContactForm() {
       </p>
     );
   }
-
   return (
     <form className={styles.form} action={formAction}>
       <div className={styles.horizontal}>

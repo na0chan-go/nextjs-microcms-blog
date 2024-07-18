@@ -5,7 +5,7 @@ function validateEmail(email: string) {
   return pattern.test(email);
 }
 
-export async function createContactDate(_prevState: any, formData: FormData) {
+export async function createContactData(_prevState: any, formData: FormData) {
   const rawFormData = {
     lastname: formData.get("lastname") as string,
     firstname: formData.get("firstname") as string,
@@ -17,35 +17,42 @@ export async function createContactDate(_prevState: any, formData: FormData) {
   if (!rawFormData.lastname) {
     return {
       status: "error",
-      body: "姓を入力してください",
+      message: "姓を入力してください",
     };
   }
   if (!rawFormData.firstname) {
     return {
       status: "error",
-      body: "名を入力してください",
+      message: "名を入力してください",
     };
   }
   if (!rawFormData.company) {
     return {
       status: "error",
-      body: "会社名を入力してください",
+      message: "会社名を入力してください",
+    };
+  }
+  if (!rawFormData.email) {
+    return {
+      status: "error",
+      message: "メールアドレスを入力してください",
     };
   }
   if (!validateEmail(rawFormData.email)) {
     return {
       status: "error",
-      body: "メールアドレスを入力してください",
+      message: "メールアドレスの形式が誤っています",
     };
   }
   if (!rawFormData.message) {
     return {
       status: "error",
-      body: "メッセージを入力してください",
+      message: "メッセージを入力してください",
     };
   }
+
   const result = await fetch(
-    "https://api.hsforms.com/submissions/v3/integration/submit/${process.env.HUBSPOT_PORTAL_ID}/${process.env.HUBSPOT_FORM_ID}",
+    `https://api.hsforms.com/submissions/v3/integration/submit/${process.env.HUBSPOT_PORTAL_ID}/${process.env.HUBSPOT_FORM_ID}`,
     {
       method: "POST",
       headers: {
@@ -87,7 +94,10 @@ export async function createContactDate(_prevState: any, formData: FormData) {
     await result.json();
   } catch (e) {
     console.log(e);
-    return { status: "error", message: "お問い合わせに失敗しました" };
+    return {
+      status: "error",
+      message: "お問い合わせに失敗しました",
+    };
   }
 
   return { status: "success", message: "OK" };
